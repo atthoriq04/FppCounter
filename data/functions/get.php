@@ -49,4 +49,15 @@ class get
         $returend = $names;
         return $returend;
     }
+
+    function getLatestCounter($con)
+    {
+        $year = date("Y");
+        $conter = $this->query->get_data($con, "SELECT * FROM counter INNER JOIN name ON counter.id_name = name.id  INNER JOIN subcategory ON name.sub = sub_id WHERE counter.Year_id = '$year'");
+        return $conter;
+    }
+    function getLogs($con, $id)
+    {
+        return $this->query->get_data($con, "SELECT * FROM logs WHERE id = '$id'");
+    }
 }

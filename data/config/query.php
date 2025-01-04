@@ -35,9 +35,18 @@ class query
     {
         $query = "UPDATE $tableName SET $datas WHERE $condition";
         if ($con->query($query) === TRUE) {
+            return [
+                "success" => true,
+                "message" => "Data inserted successfully!"
+            ];
         } else {
-            echo "Error: " . $query . "<br>" . $con->error;
-            die;
+            // Log error for debugging
+            file_put_contents('error_log.txt', $con->error . PHP_EOL, FILE_APPEND);
+            // Return error message as JSON
+            return [
+                "success" => true,
+                "message" => "Data inserted unsuccessfully!"
+            ];
         }
     }
     function dbDelete($con, $tableName, $condition)

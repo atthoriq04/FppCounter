@@ -58,10 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'addArchieve':
                 $response = $counterClass->archiveUpload($_POST['year'], $_POST['nameId'], $_POST['count']);
                 break;
+            case 'Update':
+                $response = $counterClass->counterUpdate($_POST['item'], $_POST['quantity'], $_POST['log'], $_POST['act']);
+                break;
             default:
                 $response = [
                     "success" => false,
-                    "message" => $attempt
+                    "message" => $_POST
                 ];
         }
     } else {
