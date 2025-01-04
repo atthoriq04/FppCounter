@@ -1,3 +1,5 @@
+import { sendAjax } from "./function/fetch.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const imageInput = document.getElementById("imageInput");
   const cropContainer = document.getElementById("cropContainer");
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initially, make the upload button visible
   uploadBtn.style.display = "inline-block";
-
+  imagePreview.style.maxWidth = "70%"; // Set the max width to 100% of the container
   // Handle image selection (either crop or no crop)
   imageInput.addEventListener("change", function (event) {
     const file = event.target.files[0];
@@ -29,6 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
       cropContainer.style.display = "block";
       cropBtn.style.display = "inline-block";
       uploadBtn.style.display = "none"; // Hide the upload button initially
+
+      // Scroll to the crop container
+      cropContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 
       if (cropper) {
         cropper.destroy();
@@ -106,23 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
       formData.set("image", newFile); // Set the new file with the user input name
     }
 
+    // Add the action parameter to specify the type of operation
+    formData.append("action", "member"); // You can change "add" to "edit" or "delete" based on the form's purpose
+    formData.append("attempt", "addNew"); // You can change "add" to "edit" or "delete" based on the form's purpose
+
     // If form validation passed, send the form data via AJAX
-    fetch("../data/functions/crud.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Upload response:", data);
-        if (data.success) {
-          alert("Data submitted successfully!");
-        } else {
-          alert("Upload failed: " + data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Error uploading the data:", error);
-        alert("An error occurred during upload.");
-      });
+    sendAjax("../data/control/crud.php", formData, "Settings");
   });
 });

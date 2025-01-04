@@ -14,35 +14,38 @@ require_once "../data/config/connection.php"; ?>
         <div class="row mt-5">
             <div class="col-md-6 my-1">
                 <div class="row">
-                    <h2 class"h3">Years</h2>
+                    <h2 class="h3">Years</h2>
                 </div>
                 <div class="row mt-3 px-3">
-                    <table class="table ">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Total</th>
-                                <th scope="col">Avarage</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Average</th>
                             </tr>
                         </thead>
                         <tbody>
                             <? require_once "../data/view/YearTable.php" ?>
                         </tbody>
                     </table>
-                    <a href="" class="btn btn-primary btn-sm p-2">add new Data</a>
+                    <a href="#"
+                        class="btn btn-primary btn-sm p-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addNewModal"
+                        data-type="year">Add New Year</a>
                 </div>
             </div>
             <div class="col-md-6 my-1">
                 <div class="row">
-                    <h2 class"h3">Category</h2>
+                    <h2 class="h3">Category</h2>
                 </div>
                 <div class="row mt-3 px-3">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">id</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Category</th>
                                 <th scope="col">Sub Categories</th>
                             </tr>
@@ -51,40 +54,42 @@ require_once "../data/config/connection.php"; ?>
                             <? require "../data/view/catTable.php" ?>
                         </tbody>
                     </table>
-                    <a href="" class="btn btn-primary btn-sm p-2">add new Data</a>
+                    <a href="#"
+                        class="btn btn-primary btn-sm p-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addNewModal"
+                        data-type="category">Add New Category</a>
                 </div>
             </div>
         </div>
         <div class="row mt-5">
             <h3 class="text-center h2 py-2">Name List</h3>
         </div>
-        <div class="row">
-            <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                    Dropdown link
-                </a>
-                <ul class="dropdown-menu">
-                    <?= require_once "../data/view/catDrop.php" ?>
-                </ul>
-            </div>
-        </div>
         <div class="row mt-3 px-3">
+            <a href="newNameForm.php" class="btn btn-primary btn-sm p-2">Add Data</a>
             <table class="table ">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">pic</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Category</th>
                         <th scope="col">Sub Category</th>
-                        <th scope="col">Grand Total From 2023</th>
-                        <th scope="col">Link</th>
+                        <th scope="col">Grand Total </th>
                     </tr>
                 </thead>
                 <tbody>
+                    <? require "../data/view/nametable.php" ?>
                 </tbody>
             </table>
             <a href="newNameForm.php" class="btn btn-primary btn-sm p-2">Add Data</a>
         </div>
     </div>
 
+
+    <!-- Model 1 -->
+    <? require_once("../data/view/addYearCatModal.php") ?>
+    <!-- modal2 -->
+    <? require_once("../data/view/subcategoryModal.php") ?>
+
+    <script type="module" src="../data/JS/settingsPage.js"></script>
     <? require "../assets/template/footer.php"; ?>

@@ -42,16 +42,16 @@ $SubCategories = $data->getCategoryData($con)[2];
                     <input class="form-control" type="file" name="image" id="imageInput" accept="image/*">
                 </div>
                 <div class="mb-3" id="cropContainer" style="display: none;">
-                    <img id="imagePreview" alt="Preview" style="max-width: 100%; display: block;">
+                    <img id="imagePreview" alt="Preview" class="img-thumbnail" style="max-width: 100%; display: block;">
                 </div>
                 <button type="button" id="cropBtn" class="btn btn-secondary" style="display: none;">Crop Image</button>
-                <button type="button" id="uploadBtn" class="btn btn-primary">Upload</button>
+                <button type="button" id="uploadBtn" name="addNewName" class="btn btn-primary">Upload</button>
             </form>
         </div>
     </div>
 </div>
 
 
-<script src="../data/JS/newdata.js"></script>
+<script type="module" src="../data/JS/newdata.js"></script>
 
 <? require "../assets/template/footer.php"; ?>

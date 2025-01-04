@@ -9,6 +9,5 @@ $params = $data->getYearData($con)[0];
         <td> <?= $year[$params[0]] ?> </td>
         <td> <?= $year[$params[1]] ?> </td>
         <td> <?= $year[$params[2]] ?> </td>
-        <td><a href="#modals"> edit </a></td>
     </tr>
 <? } ?>

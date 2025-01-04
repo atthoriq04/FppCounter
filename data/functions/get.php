@@ -22,7 +22,7 @@ class get
     function getCategoryData($con)
     {
         $categoryDatas = $this->query->get_data($con, "SELECT * FROM category");
-        $subs = $this->query->get_data($con, "SELECT * FROM subcategory");
+        $subs = $this->query->get_data($con, "SELECT * FROM subcategory ORDER BY id_cat ASC;");
         $tokeep = ["cat_id", "Category", "subCategoryCount"];
         $subCount = [];
         foreach ($subs as $sub) {
@@ -45,9 +45,8 @@ class get
 
     function getNames($con)
     {
-        $names = $this->query->get_data($con, "SELECT * FROM name INNER JOIN category ON name.Cat = category.cat_Id INNER JOIN subcategory ON subcategory.id_cat = category.cat_id");
-        $tokeep = ["id", "Name", "Category", "SubCategory"];
-        $returend = [$names, $tokeep];
+        $names = $this->query->get_data($con, "SELECT * FROM name INNER JOIN category ON name.Cat = category.cat_Id INNER JOIN subcategory ON subcategory.sub_id = name.Sub ORDER BY sub ASC,name.id ASC");
+        $returend = $names;
         return $returend;
     }
 }
