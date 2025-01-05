@@ -9,6 +9,7 @@ function cardFooter(date) {
   const cardFooter = document.createElement("div");
   cardFooter.classList.add("card-footer", "text-body-secondary"); // Add both classes
   const p = document.createElement("p");
+  p.classList.add("cardFooter");
   p.innerHTML = "Last Updated : " + date;
   cardFooter.appendChild(p);
   return cardFooter;
@@ -140,6 +141,74 @@ function counter(id, name, image, value, log, date) {
 
   return column;
 }
+
+function createLinkList(x, name) {
+  // Create the table row
+  const row = document.createElement("tr");
+
+  // Create and append the first <td> with x
+  const tdIndex = document.createElement("td");
+  tdIndex.classList.add("text-center");
+  tdIndex.textContent = x;
+  row.appendChild(tdIndex);
+
+  // Create and append the third <td> with Name
+  const tdName = document.createElement("td");
+  tdName.classList.add("text-center");
+  tdName.textContent = name["Name"];
+  row.appendChild(tdName);
+
+  // Create and append the fourth <td> with SubCategory
+  const tdSubCategory = document.createElement("td");
+  tdSubCategory.classList.add("text-center");
+  tdSubCategory.textContent = name["SubCategory"];
+  row.appendChild(tdSubCategory);
+
+  // Create and append the fifth <td> with a static value (0)
+  const tdStatic = document.createElement("td");
+  tdStatic.classList.add("text-center");
+  tdStatic.textContent = name["grandTotal"];
+  row.appendChild(tdStatic);
+
+  return row;
+}
+
+function createRanksHead() {
+  // Create the <thead> element
+  const thead = document.createElement("thead");
+  thead.classList.add("text-center");
+
+  // Create the <tr> element
+  const tr = document.createElement("tr");
+
+  // Create the <th> elements for each column header
+  const th1 = document.createElement("th");
+  th1.scope = "col";
+  th1.textContent = "#";
+
+  const th2 = document.createElement("th");
+  th2.scope = "col";
+  th2.textContent = "Name";
+
+  const th3 = document.createElement("th");
+  th3.scope = "col";
+  th3.textContent = "Sub Category";
+
+  const th4 = document.createElement("th");
+  th4.scope = "col";
+  th4.textContent = "Grand Total";
+
+  // Append the <th> elements to the <tr>
+  tr.appendChild(th1);
+  tr.appendChild(th2);
+  tr.appendChild(th3);
+  tr.appendChild(th4);
+
+  // Append the <tr> to the <thead>
+  thead.appendChild(tr);
+  return thead;
+}
+
 {
   /* <div class="col-sm-4 mt-4">
         <div class="card">
@@ -155,4 +224,4 @@ function counter(id, name, image, value, log, date) {
         </div> */
 }
 
-export { nameSelection, counter };
+export { nameSelection, counter, createLinkList, createRanksHead };

@@ -14,7 +14,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("grid");
   const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
   const listed = selectedData["cat_id"];
+  const options = {
+    year: "numeric", // Example: '2025'
+    month: "long", // Example: 'January'
+    day: "2-digit", // Example: '06'
+    hour: "2-digit", // Example: '01'
+    minute: "2-digit", // Example: '14'
+    hour12: true, // 12-hour clock with AM/PM
+  };
+  const now = new Date();
+  // Format the date
+  let formattedDate = now.toLocaleString("en-GB", options); // 'en-GB' for the format 'DD Month YYYY, HH:mm AM/PM'
+  // Replace " at" with a comma
+  formattedDate = formattedDate.replace(" at", ",");
 
+  // Replace "am" with "AM" and "pm" with "PM"
+  formattedDate = formattedDate.replace(/am/g, "AM").replace(/pm/g, "PM");
+
+  // Adjust the formatted string for the desired format
+  console.log(formattedDate);
   const filteredData = counterList.filter((item) => listed.includes(item.Cat));
   console.log(filteredData);
   filteredData.forEach((element) => {
@@ -49,11 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const log = card.querySelector(".id").getAttribute("data-log"); // Get the item name
 
       const quantityElement = card.querySelector(".value"); // Quantity display
+      const footer = card.querySelector(".cardFooter"); // Quantity display
+      console.log(footer);
       let currentQuantity = parseInt(quantityElement.textContent);
       // Determine the new quantity
       const newQuantity =
         act === "+" ? currentQuantity + 1 : currentQuantity - 1;
-      console.log(log);
+      const date = formattedDate;
       if (newQuantity >= 1) {
         // Prevent negative quantities
         // Update the quantity on the frontend
@@ -72,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
               alert("Data submitted successfully!");
               quantityElement.textContent = newQuantity;
+              footer.textContent = "Last Updated : " + date;
             } else {
               alert("Upload failed: " + data.message);
             }

@@ -15,16 +15,27 @@ class counterClass
         $this->datetime = $date->format('d F Y, h.i A');
     }
 
+    function updateyear($action)
+    {
+        $year = date("Y");
+        if ($action === "+") {
+            return $this->query->dbUpdate($this->con, "year", "Total = Total + 1", "Year = $year");
+        }
+        return $this->query->dbUpdate($this->con, "year", "Total = Total - 1", "Year = $year");
+    }
     function addNewCounter($year, $name)
     {
+
+        $datetime = $this->datetime;
         $log = 1;
-        $value = "'$year','$name','1','03 January 2025, 07.30','03 January 2025, 23.00','$log'";
+        $value = "'$year','$name','1','$datetime','$datetime','$log'";
         // $query = "INSERT INTO counter (Year_id,id_name,count,First_Update,Last_Update,Logs) VALUES ($value)";
         // return [
         //     "success" => true,
         //     "message" => $query,
         // ];
         if ($this->query->dbInsert($this->con, 'counter', $value, "Year_id,id_name,count,First_Update,Last_Update,Logs")) {
+            $year = $this->updateyear("+");
             return [
                 "success" => true,
                 "message" => "Data uploaded successfully!",
@@ -51,6 +62,7 @@ class counterClass
             return [
                 "success" => true,
                 "message" => "Data uploaded successfully!",
+                "yearUpdateResult" => $year,
             ];
         } else {
             return [
@@ -67,14 +79,6 @@ class counterClass
             return  $this->query->dbInsert($this->con, "logs", $value, "id_counter,count,createTime");
         }
         return;
-    }
-    function updateyear($action)
-    {
-        $year = date("Y");
-        if ($action === "+") {
-            return $this->query->dbUpdate($this->con, "year", "Total = Total + 1", "Year = $year");
-        }
-        return $this->query->dbUpdate($this->con, "year", "Total = Total - 1", "Year = $year");
     }
     function counterUpdate($id, $number, $log, $action)
     {

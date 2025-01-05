@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputLabel = addNewModal.querySelector("#inputLabel");
   const form = addNewModal.querySelector("form");
   const submitButton = addNewModal.querySelector("#submitButton");
-
+  const overview = document.querySelectorAll(".overview"); // Select all elements with the given class
+  overview.forEach((element) => {
+    element.remove(); // Remove each element
+  });
   let catID = null;
   let categoryName;
   categoryModal.addEventListener("show.bs.modal", (event) => {

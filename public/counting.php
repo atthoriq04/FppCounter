@@ -8,7 +8,6 @@ require "../data/config/pulldata.php";
 $data = new get("../data/config/query.php");
 $name = $data->getNames($con);
 $latCounter = $data->getLatestCounter($con);
-$categories = sendCounter($data->getCategoryData($con)[0], $latCounter);
 // echo '<pre>';
 // print_r($category);
 // echo '</pre>';
