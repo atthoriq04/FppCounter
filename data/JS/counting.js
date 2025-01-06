@@ -4,15 +4,17 @@ import { phpArray } from "./function/function.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const selectedData = JSON.parse(sessionStorage.getItem("selectedCat"));
+  const counterList = JSON.parse(sessionStorage.getItem("counterList"));
+  const isArchive = JSON.parse(sessionStorage.getItem("isArchive"));
   if (!selectedData) {
     alert("You are not supposed to be here");
     window.location.href = "counter.php";
   }
   const header = document.getElementById("header");
   header.innerHTML = "Counter Category : " + selectedData["Category"];
-  const dataSender = document.getElementById("Data-Sender");
+  // const dataSender = document.getElementById("Data-Sender");
   const grid = document.getElementById("grid");
-  const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
+  // const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
   const listed = selectedData["cat_id"];
   const options = {
     year: "numeric", // Example: '2025'
@@ -30,79 +32,118 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Replace "am" with "AM" and "pm" with "PM"
   formattedDate = formattedDate.replace(/am/g, "AM").replace(/pm/g, "PM");
+  const breakpoints = {
+    sm: 576, // Small (Smartphone)
+    md: 768, // Medium (Tablet)
+    lg: 992, // Large (Desktop)
+  };
 
-  // Adjust the formatted string for the desired format
-  console.log(formattedDate);
-  const filteredData = counterList.filter((item) => listed.includes(item.Cat));
-  console.log(filteredData);
-  filteredData.forEach((element) => {
-    const item = counter(
-      element.countId,
-      element.Name,
-      "../assets/images/" + element["Image"],
-      element.count,
-      element.Logs,
-      element.Last_Update
-    );
-    grid.appendChild(item);
-  });
-  document.querySelectorAll(".log").forEach((link) => {
-    link.addEventListener("click", function () {
-      const card = this.closest(".card");
-      const itemId = card.querySelector(".id").getAttribute("data-id"); // Get the item name
-      requestAjax("../data/control/crud.php", itemId)
-        .then((data) => {
-          console.log(data); // Process the fetched data
-        })
-        .catch((error) => {
-          console.error("Error:", error); // Handle any error
-        });
+  function updateElementClassBasedOnWidth(element) {
+    if (window.innerWidth >= breakpoints.lg) {
+      // Large screens (Desktop)
+      element.classList.remove("col-3", "col-6");
+      element.classList.add("col-2");
+    } else if (window.innerWidth >= breakpoints.md) {
+      // Medium screens (Tablet)
+      element.classList.remove("col-2", "col-6");
+      element.classList.add("col-3");
+    } else if (window.innerWidth >= breakpoints.sm) {
+      // Small screens (Smartphone)
+      element.classList.remove("col-2", "col-3");
+      element.classList.add("col-6");
+    } else {
+      // Smaller than small screen
+      element.classList.remove("col-2", "col-3", "col-6");
+      element.classList.add("col-6");
+    }
+  }
+
+  function addData(data) {
+    grid.innerHTML = ""; // Clear previous content
+
+    const filteredData = data.filter((item) => listed.includes(item.Cat));
+    console.log(filteredData);
+
+    filteredData.sort((a, b) => b.count - a.count);
+
+    // Loop through each element in the filtered data
+    filteredData.forEach((element) => {
+      const item = counter(
+        element.countId,
+        element.Name,
+        "../assets/images/" + element["Image"],
+        element.count,
+        element.Logs,
+        element.Last_Update,
+        isArchive
+      );
+
+      grid.appendChild(item);
+
+      // Apply responsive classes to each item
+      updateElementClassBasedOnWidth(item);
+    });
+
+    // Reattach event listeners to newly created buttons (if applicable)
+    attachEventListeners();
+  }
+
+  // Optionally, add an event listener for window resizing to update classes dynamically
+  window.addEventListener("resize", () => {
+    // Apply the responsive classes to each item in the grid
+    const items = document.querySelectorAll(".col");
+    items.forEach((item) => {
+      updateElementClassBasedOnWidth(item);
     });
   });
-  document.querySelectorAll(".btn-secondary").forEach((button) => {
-    button.addEventListener("click", function () {
-      const act = this.textContent.trim(); // "+" or "-"
-      const card = this.closest(".card");
-      const itemId = card.querySelector(".id").getAttribute("data-id"); // Get the item name
-      const log = card.querySelector(".id").getAttribute("data-log"); // Get the item name
+  addData(counterList);
 
-      const quantityElement = card.querySelector(".value"); // Quantity display
-      const footer = card.querySelector(".cardFooter"); // Quantity display
-      console.log(footer);
-      let currentQuantity = parseInt(quantityElement.textContent);
-      // Determine the new quantity
-      const newQuantity =
-        act === "+" ? currentQuantity + 1 : currentQuantity - 1;
-      const date = formattedDate;
-      if (newQuantity >= 1) {
-        // Prevent negative quantities
-        // Update the quantity on the frontend
-        fetch("../data/control/crud.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `action=Counter&attempt=Update&item=${encodeURIComponent(
-            itemId
-          )}&quantity=${encodeURIComponent(
-            newQuantity
-          )}&log=${encodeURIComponent(log)}&act=${encodeURIComponent(act)}`,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Upload response:", data);
-            if (data.success) {
-              alert("Data submitted successfully!");
-              quantityElement.textContent = newQuantity;
-              footer.textContent = "Last Updated : " + date;
-            } else {
-              alert("Upload failed: " + data.message);
-            }
+  function attachEventListeners() {
+    document.querySelectorAll(".btn-secondary").forEach((button) => {
+      button.addEventListener("click", function () {
+        const act = this.textContent.trim(); // "+" or "-"
+        const card = this.closest(".card");
+        const itemId = card.querySelector(".id").getAttribute("data-id");
+        const log = card.querySelector(".id").getAttribute("data-log");
+
+        const quantityElement = card.querySelector(".value");
+        const footer = card.querySelector(".cardFooter");
+        let currentQuantity = parseInt(quantityElement.textContent);
+        const newQuantity =
+          act === "+" ? currentQuantity + 1 : currentQuantity - 1;
+        const date = formattedDate;
+
+        if (newQuantity >= 1) {
+          fetch("../data/control/crud.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `action=Counter&attempt=Update&item=${encodeURIComponent(
+              itemId
+            )}&quantity=${encodeURIComponent(
+              newQuantity
+            )}&log=${encodeURIComponent(log)}&act=${encodeURIComponent(act)}`,
           })
-          .catch((error) => {
-            console.error("Error uploading the data:", error);
-            alert(error);
-          });
-      }
-      // Make an AJAX request to update the database
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Upload response:", data);
+              if (data.success) {
+                alert("Data submitted successfully!");
+                const updatedData = JSON.parse(data.updatedData);
+                sessionStorage.setItem(
+                  "counterList",
+                  JSON.stringify(updatedData)
+                );
+                addData(updatedData);
+              } else {
+                alert("Upload failed: " + data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error uploading the data:", error);
+              alert(error);
+            });
+        }
+      });
     });
-  });
+  }
 });

@@ -85,10 +85,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Get the user's name and replace spaces with dashes for the file name
     const userName = nameInput.value.trim();
+    const categorySelect = document.getElementById("category");
+    const subCategorySelect = document.getElementById("subcat");
 
     // Check if the name input is empty or if any other required field is empty
-    if (userName === "") {
-      return alert("Data can't be blank. Please enter a name.");
+    if (
+      userName === "" ||
+      categorySelect.value === "0" ||
+      subCategorySelect.value === "0"
+    ) {
+      return alert("Data can't be blank.");
     }
 
     // Get the user's name and sanitize it to use as a file name

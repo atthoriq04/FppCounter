@@ -34,7 +34,7 @@ function cardImage(image) {
 }
 function col() {
   const col = document.createElement("div");
-  col.classList.add("col-md-3");
+  col.classList.add("col-sm-3");
   col.classList.add("mt-3");
   return col;
 }
@@ -58,25 +58,26 @@ function nameSelection(id, name, image, category, SubCategory) {
   selected.href = "#"; // Set the href attribute
   selected.classList.add("card-link"); // Add the 'card-link' class
   selected.id = "selected" + id; // Set the id attribute
-  selected.textContent = "Select";
+  selected.style.textDecoration = "none";
 
   body.appendChild(disCategory);
   body.appendChild(disSubCategory);
-  body.appendChild(selected);
 
   container.appendChild(cardImage(image));
   container.appendChild(cardHeader(name));
   container.appendChild(body);
+  selected.appendChild(container);
 
-  column.appendChild(container);
+  column.appendChild(selected);
   return column;
 }
 
-function counter(id, name, image, value, log, date) {
+function counter(id, name, image, value, log, date, isArchive) {
   // Create the card components
   const body = cardBody();
   const container = cardContainer();
-  const column = col();
+  const col = document.createElement("div");
+  col.classList.add("mt-3");
   const Footer = cardFooter(date);
   const cardHeader = document.createElement("div");
   cardHeader.classList.add("card-header");
@@ -96,22 +97,24 @@ function counter(id, name, image, value, log, date) {
 
   // Create the row for the counter
   const row = document.createElement("div");
-  row.classList.add("row", "text-center", "py-4", "mx-3");
+  row.classList.add("row", "text-center", "py-4", "mx-1");
 
   // Minus button
   const colMinus = document.createElement("div");
   colMinus.classList.add("col-4");
   const btnMinus = document.createElement("button");
-  btnMinus.classList.add("btn", "btn-secondary");
+  btnMinus.classList.add("btn", "btn-secondary", "m-0");
   btnMinus.style.width = "100%";
   btnMinus.textContent = "-";
-  colMinus.appendChild(btnMinus);
-
+  if (isArchive !== true) {
+    colMinus.appendChild(btnMinus);
+  }
   // Value display
   const colValue = document.createElement("div");
-  colValue.classList.add("col-4");
+  colValue.classList.add("col-4", "text-center");
   const valueText = document.createElement("h5");
-  valueText.classList.add("value");
+  valueText.classList.add("value", "m-0");
+  valueText.style.background = "grey";
   valueText.textContent = value;
   colValue.appendChild(valueText);
 
@@ -119,10 +122,12 @@ function counter(id, name, image, value, log, date) {
   const colPlus = document.createElement("div");
   colPlus.classList.add("col-4");
   const btnPlus = document.createElement("button");
-  btnPlus.classList.add("btn", "btn-secondary");
+  btnPlus.classList.add("btn", "btn-secondary", "m-0");
   btnPlus.style.width = "100%";
   btnPlus.textContent = "+";
-  colPlus.appendChild(btnPlus);
+  if (isArchive !== true) {
+    colPlus.appendChild(btnPlus);
+  }
 
   // Append the counter components to the row
   row.appendChild(colMinus);
@@ -137,9 +142,9 @@ function counter(id, name, image, value, log, date) {
   container.appendChild(Footer);
 
   // Add the card to the column
-  column.appendChild(container);
+  col.appendChild(container);
 
-  return column;
+  return col;
 }
 
 function createLinkList(x, name) {

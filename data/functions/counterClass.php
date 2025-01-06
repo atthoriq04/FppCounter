@@ -85,7 +85,6 @@ class counterClass
         $datetime = $this->datetime;
         $condition = "countId = '$id'";
         $data = "count = '$number' , Last_Update = '$datetime'";
-
         // $query = "UPDATE counter SET $data WHERE $condition";
         // return [
         //     "success" => false,
@@ -94,11 +93,13 @@ class counterClass
         if ($this->query->dbUpdate($this->con, "counter", $data, $condition)) {
             $logs = $this->createLog($id, $number, $log);
             $year = $this->updateyear($action);
+            $thisyear = date('Y');
+
             return [
                 "success" => true,
                 "message" => "Data uploaded successfully!",
                 "logResult" => $logs,
-                "yearUpdateResult" => $year,
+                "updatedData" => json_encode($this->query->get_data($this->con, "SELECT * FROM counter INNER JOIN name ON counter.id_name = name.id  INNER JOIN subcategory ON name.sub = sub_id WHERE Year_id =" . $thisyear), JSON_HEX_APOS | JSON_HEX_QUOT),
             ];
         } else {
             return [

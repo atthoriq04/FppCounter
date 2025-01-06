@@ -68,7 +68,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
 <hr>
 <div class="container">
     <div class="row">
-        <?= rankingNameList($newNameList, "../assets/images/") ?>
+        <?= rankingNameList($newNameList, "../assets/images/", 1, "col-sm-6") ?>
     </div>
 </div>
 

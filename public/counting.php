@@ -7,16 +7,16 @@ require "../assets/template/header.php";
 require "../data/config/pulldata.php";
 $data = new get("../data/config/query.php");
 $name = $data->getNames($con);
-$latCounter = $data->getLatestCounter($con);
+
 // echo '<pre>';
 // print_r($category);
 // echo '</pre>';
 ?>
 
-<div class="row" style="background-color:grey" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($latCounter, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>">
+<div class="row" style="background-color:grey" id="Data-Sender">
     <h1 class="text-center" id="header">conter</h1>
 </div>
-<div class="row mt-5 mx-3" id="grid">
+<div class="row mt-5 mx-auto" id="grid">
 
 </div>
 </div>

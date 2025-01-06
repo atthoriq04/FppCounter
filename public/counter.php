@@ -7,14 +7,15 @@ require "../assets/template/header.php";
 require "../data/config/pulldata.php";
 $data = new get("../data/config/query.php");
 $name = $data->getNames($con);
-$latCounter = $data->getLatestCounter($con);
+$latCounter = $data->getCounterByYear($con, date("Y"));
 $categories = sendCounter($data->getCategoryData($con)[0], $latCounter, $name);
 // echo '<pre>';
 // print_r($category);
 // echo '</pre>';
+
 ?>
 
-<div class="row" style="background-color:grey" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($latCounter, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>">
+<div class="row" style="background-color:grey" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($latCounter, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>" data-isArchive="false">
     <h1 class="text-center">conter</h1>
 </div>
 <div class="container">

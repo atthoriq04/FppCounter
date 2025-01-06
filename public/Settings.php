@@ -12,7 +12,7 @@ require_once "../data/config/connection.php"; ?>
     </div>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-md-6 my-1">
+            <div class="col-lg-6 my-1">
                 <div class="row">
                     <h2 class="h3">Years</h2>
                 </div>
@@ -37,7 +37,7 @@ require_once "../data/config/connection.php"; ?>
                         data-type="year">Add New Year</a>
                 </div>
             </div>
-            <div class="col-md-6 my-1">
+            <div class="col-lg-6 my-1">
                 <div class="row">
                     <h2 class="h3">Category</h2>
                 </div>
@@ -67,22 +67,10 @@ require_once "../data/config/connection.php"; ?>
         </div>
         <div class="row mt-3 px-3">
             <a href="newNameForm.php" class="btn btn-primary btn-sm p-2">Add Data</a>
-            <table class="table ">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">pic</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Sub Category</th>
-                        <th scope="col">Grand Total </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <? require "../data/view/nametable.php" ?>
-                </tbody>
-            </table>
-            <a href="newNameForm.php" class="btn btn-primary btn-sm p-2">Add Data</a>
+            <? require_once "../data/view/nametable.php" ?>
+
         </div>
+
     </div>
 
 
@@ -90,6 +78,8 @@ require_once "../data/config/connection.php"; ?>
     <? require_once("../data/view/addYearCatModal.php") ?>
     <!-- modal2 -->
     <? require_once("../data/view/subcategoryModal.php") ?>
+    <!-- modal 3 -->
+    <? require_once("../data/view/editNameModal.php") ?>
 
     <script type="module" src="../data/JS/settingsPage.js"></script>
     <? require "../assets/template/footer.php"; ?>

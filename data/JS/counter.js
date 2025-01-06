@@ -10,11 +10,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const addCounter = document.getElementById("addCounter");
   const count = document.getElementById("count");
   const dataSender = document.getElementById("Data-Sender");
-
+  const isArchive = dataSender.getAttribute("data-isArchive") === "true";
   const goTo = document.querySelectorAll(".gotopage");
-
+  console.log(isArchive);
   const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
-
+  console.log(counterList);
+  goTo.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      sessionStorage.setItem(
+        "selectedCat",
+        JSON.stringify(phpArray(link.getAttribute("selected-data")))
+      );
+      sessionStorage.setItem("counterList", JSON.stringify(counterList));
+      sessionStorage.setItem("isArchive", JSON.stringify(isArchive));
+      window.location.href = "counting.php";
+    });
+  });
   newCounterButton.addEventListener("click", (event) => {
     const year = document.getElementById("year");
     const searchName = document.getElementById("searchName");
@@ -81,19 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       sendAjax("../data/control/crud.php", formData, "counter");
-    });
-  });
-
-  goTo.forEach((link) => {
-    console.log(link);
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      sessionStorage.setItem(
-        "selectedCat",
-        JSON.stringify(phpArray(link.getAttribute("selected-data")))
-      );
-
-      window.location.href = "counting.php";
     });
   });
 

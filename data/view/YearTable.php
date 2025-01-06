@@ -11,7 +11,7 @@ foreach ($years as $year) { ?>
         <td> <?= $year[$params[0]] ?> </td>
         <td> <?= $year[$params[1]] ?> </td>
         <td> <?= $year[$params[2]] ?> </td>
-        <td><a href="" class="overview">Year Overview</a></td>
+        <td><a href="archive.php?year=<?= $year[$params[0]] ?>" class="overview">Year Overview</a></td>
     </tr>
 
 <? $x++;

@@ -1,30 +1,55 @@
 <?php
 $data = new get("../data/config/query.php");
+require "../data/config/pulldata.php";
 $names = $data->getNames($con);
+$counters = $data->getAllCounter($con);
+$yearList = $data->getYearData($con);
 $categories = $data->getCategoryData($con)[0];
-
+$newNameList = getNames($names, $counters, $yearList[1]);
 ?>
 
 <? foreach ($categories as $category) {
     $x = 1; ?>
 
-    <tr>
-        <td colspan="5" class="text-center"> <?= $category["Category"] ?></td>
-    </tr>
-    <? foreach ($names as $name) {
-        if ($name["Cat"] === $category['cat_id']) {
-    ?>
-            <tr>
-                <td class="text-center"> <?= $x ?></td>
-                <td class="text-center"><img src="../assets/images/<?= $name["Image"] ?>" class="img-fluid" alt="..." width="200" height="200"></td>
-                <td class="text-center"> <?= $name["Name"] ?></td>
-                <td class="text-center"> <?= $name["SubCategory"] ?></td>
-                <td class="text-center"> 0</td>
-            </tr>
-    <?
+    <hr class="mt-1">
+    <div class="container">
+        <div class="row">
+            <h5 class="text-center"><?= $category['Category'] ?> </h5>
+        </div>
+    </div>
+    <hr>
+    <div class="row mt-1">
+        <? foreach ($newNameList as $name) {
+            if ($name["Cat"] === $category['cat_id']) {
 
-            $x++;
-        }
-    } ?>
+        ?>
+                <div class="col-4 namelists ">
+                    <div class="card mb-3" style="max-width: 100%;">
+                        <div class="row g-0">
+                            <div class="col-xl-6">
+                                <img src="../assets/images/<?= $name['Image'] ?>" class="img-fluid  rounded-start text-center " styly="width:50vw" alt=" ...">
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= $name['Name'] ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary"><?= $name['Category'] . " " . $name['SubCategory'] ?></h6>
+                                    <hr>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Total = <?= $name['grandTotal'] ?></li>
+                                        <a href="#" class="card-link mt-3 edit" data-bs-toggle="modal"
+                                            data-bs-target="#editNameModal" data-name="<?= htmlspecialchars(json_encode($name, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> " data-sub="<?= htmlspecialchars(json_encode($data->getCategoryData($con)[2], JSON_HEX_APOS | JSON_HEX_QUOT)) ?>">Edit Data</a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <?
+
+                $x++;
+            }
+        } ?>
+    </div>
 <? $x = 0;
 } ?>

@@ -50,9 +50,8 @@ class get
         return $returend;
     }
 
-    function getLatestCounter($con)
+    function getCounterByYear($con, $year)
     {
-        $year = date("Y");
         $conter = $this->query->get_data($con, "SELECT * FROM counter INNER JOIN name ON counter.id_name = name.id  INNER JOIN subcategory ON name.sub = sub_id WHERE counter.Year_id = '$year'");
         return $conter;
     }
