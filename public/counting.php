@@ -13,7 +13,7 @@ $name = $data->getNames($con);
 // echo '</pre>';
 ?>
 
-<div class="row" style="background-color:grey" id="Data-Sender">
+<div class="row mt-5 pt-3" style="background-color:grey" id="Data-Sender">
     <h1 class="text-center" id="header">conter</h1>
 </div>
 <div class="row mt-5 mx-auto" id="grid">
@@ -22,5 +22,6 @@ $name = $data->getNames($con);
 </div>
 
 
+<? require_once "../data/view/logsModal.php" ?>
 <script type="module" src="../data/JS/counting.js"></script>
 <? require "../assets/template/footer.php"; ?>

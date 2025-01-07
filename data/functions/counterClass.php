@@ -23,11 +23,11 @@ class counterClass
         }
         return $this->query->dbUpdate($this->con, "year", "Total = Total - 1", "Year = $year");
     }
-    function addNewCounter($year, $name)
+    function addNewCounter($year, $name, $log)
     {
 
         $datetime = $this->datetime;
-        $log = 1;
+
         $value = "'$year','$name','1','$datetime','$datetime','$log'";
         // $query = "INSERT INTO counter (Year_id,id_name,count,First_Update,Last_Update,Logs) VALUES ($value)";
         // return [
@@ -107,5 +107,15 @@ class counterClass
                 "message" => "Failed to insert data into the database.",
             ];
         }
+    }
+
+    function getLog($id)
+    { //
+        $query = "SELECT * FROM logs WHERE idCounter = " . $id;
+
+        return [
+            "success" => true,
+            "updatedData" => json_encode($this->query->get_data($this->con, "SELECT * FROM logs WHERE id_Counter = " . $id), JSON_HEX_APOS | JSON_HEX_QUOT),
+        ];
     }
 }

@@ -8,9 +8,9 @@ $Categories = $data->getCategoryData($con)[0];
 $SubCategories = $data->getCategoryData($con)[2];
 ?>
 <? require "../assets/template/header.php"; ?>
-<div class="container">
+<div class="container  mt-5 pt-3">
     <div class="row mt-5 p-4">
-        <h1 class="h1 text-center">Add New Data</h1>
+        <h1 class="h1 text-center" id="sender" data-sub="<?= htmlspecialchars(json_encode($SubCategories, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> ">Add New Data</h1>
     </div>
     <div class="row mt-3">
         <div class="col-md-8 m-auto">
@@ -30,10 +30,8 @@ $SubCategories = $data->getCategoryData($con)[2];
                 </div>
                 <div class="form-floating mb-3">
                     <select class="form-select" id="subcat" name="subCat" aria-label="Floating label select example">
-                        <option value="0">sub Category</option>
-                        <? foreach ($SubCategories as $category) { ?>
-                            <option value="<?= $category["sub_id"] ?>"><?= $category["SubCategory"] ?></option>
-                        <? } ?>
+                        <option value="0">Select Category to Select Sub Category</option>
+
                     </select>
                     <label for="subcat">Select The Sub Category</label>
                 </div>

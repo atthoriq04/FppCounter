@@ -70,9 +70,67 @@ class memberName
             ];
         }
     }
-    public function updateMember($id, $postData)
+    public function updateMember($postData, $fileData)
     {
         // Logic for updating a member's information
+        $subCat = isset($postData['subCat']) ? $postData['subCat'] : 'No sub-category provided';
+        $fileName = $postData['fileName'];
+        $id = $postData['id'];
+
+        // Handle file upload
+        if (isset($fileData['image']) && $fileData['image']['error'] === UPLOAD_ERR_OK) {
+            $targetDir = "../../assets/images/";
+            $fileName = basename($fileData['image']['name']);
+            $targetFilePath = $targetDir . $fileName;
+
+            // Ensure the directory exists
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            // Check if a file with the same name already exists
+            if (file_exists($targetFilePath)) {
+                if (!unlink($targetFilePath)) {
+                    return [
+                        "success" => false,
+                        "message" => "Failed to delete existing file: " . $fileName,
+                    ];
+                }
+            }
+            // Validate file type
+            $imageFileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+            if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+                return [
+                    "success" => false,
+                    "message" => "Only image files (JPG, JPEG, PNG, GIF) are allowed.",
+                ];
+            }
+
+            // Attempt to move uploaded file
+            if (!move_uploaded_file($fileData['image']['tmp_name'], $targetFilePath)) {
+                return [
+                    "success" => false,
+                    "message" => "Failed to move uploaded file.",
+                    "tmpName" => $fileData['image']['tmp_name'],
+                    "targetPath" => $targetFilePath,
+                ];
+            }
+        }
+
+        // Prepare data for insertion
+        $condition = "id = '$id'";
+        $data = "sub = '$subCat' , Image = '$fileName'";
+        if ($this->query->dbUpdate($this->con, "name", $data, $condition)) {
+
+            return [
+                "success" => true,
+                "message" => "Data uploaded successfully!"
+            ];
+        } else {
+            return [
+                "success" => false,
+                "message" => "Failed to insert data into the database.",
+            ];
+        }
     }
 
     public function deleteMember($id)

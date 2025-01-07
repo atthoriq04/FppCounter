@@ -84,16 +84,24 @@ function counter(id, name, image, value, log, date, isArchive) {
 
   const logHeader = document.createElement("a");
   logHeader.classList.add("log");
+  logHeader.setAttribute("data-id", id);
+  logHeader.setAttribute("data-bs-toggle", "modal");
+  logHeader.setAttribute("data-bs-target", "#logsModal");
+  logHeader.setAttribute("data-name", name);
   logHeader.href = "#";
-
+  //  class="btn btn-primary"  data-bs-target=""
   const cardTitle = document.createElement("h5");
   cardTitle.classList.add("text-center");
   cardTitle.classList.add("id");
-  cardTitle.innerHTML = name;
   cardTitle.setAttribute("data-id", id);
   cardTitle.setAttribute("data-log", log);
-  logHeader.appendChild(cardTitle);
-  cardHeader.appendChild(logHeader);
+  cardTitle.innerHTML = name;
+  if (log !== "1") {
+    cardHeader.appendChild(cardTitle);
+  } else {
+    logHeader.appendChild(cardTitle);
+    cardHeader.appendChild(logHeader);
+  }
 
   // Create the row for the counter
   const row = document.createElement("div");
@@ -147,7 +155,7 @@ function counter(id, name, image, value, log, date, isArchive) {
   return col;
 }
 
-function createLinkList(x, name) {
+function createLinkList(x, name, sub, total) {
   // Create the table row
   const row = document.createElement("tr");
 
@@ -160,19 +168,19 @@ function createLinkList(x, name) {
   // Create and append the third <td> with Name
   const tdName = document.createElement("td");
   tdName.classList.add("text-center");
-  tdName.textContent = name["Name"];
+  tdName.textContent = name;
   row.appendChild(tdName);
 
   // Create and append the fourth <td> with SubCategory
   const tdSubCategory = document.createElement("td");
   tdSubCategory.classList.add("text-center");
-  tdSubCategory.textContent = name["SubCategory"];
+  tdSubCategory.textContent = sub;
   row.appendChild(tdSubCategory);
 
   // Create and append the fifth <td> with a static value (0)
   const tdStatic = document.createElement("td");
   tdStatic.classList.add("text-center");
-  tdStatic.textContent = name["grandTotal"];
+  tdStatic.textContent = total;
   row.appendChild(tdStatic);
 
   return row;

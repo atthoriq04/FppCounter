@@ -24,7 +24,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
 // echo '</pre>';
 // echo "Study " . $_GET['year'];
 ?>
-<div class="container">
+<div class="container mt-5 pt-3">
     <div class="row mb-5 mt-2">
         <h1 class="text-center"><?= $year ?> Year Overview</h1>
     </div>
@@ -32,7 +32,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
 
 <hr>
 <div class="container">
-    <div class="row my-2" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($counters, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> " data-isArchive="true">
+    <div class="row my-2" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($counters, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> " data-isArchive="true" data-year="<?= $_GET['year'] ?>">
         <h4 class="text-center"><?= $year ?> Category Ranking archive</h4>
     </div>
 </div>

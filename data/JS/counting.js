@@ -1,6 +1,7 @@
 import { requestAjax } from "./function/fetch.js";
 import { counter } from "./function/elementCreation.js";
 import { phpArray } from "./function/function.js";
+import { createLinkList } from "./function/elementCreation.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const selectedData = JSON.parse(sessionStorage.getItem("selectedCat"));
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   header.innerHTML = "Counter Category : " + selectedData["Category"];
   // const dataSender = document.getElementById("Data-Sender");
   const grid = document.getElementById("grid");
+  const title = document.getElementById("title");
+  const logLists = document.getElementById("logLists");
   // const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
   const listed = selectedData["cat_id"];
   const options = {
@@ -37,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     md: 768, // Medium (Tablet)
     lg: 992, // Large (Desktop)
   };
-
   function updateElementClassBasedOnWidth(element) {
     if (window.innerWidth >= breakpoints.lg) {
       // Large screens (Desktop)
@@ -57,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
       element.classList.add("col-6");
     }
   }
-
   function addData(data) {
     grid.innerHTML = ""; // Clear previous content
 
@@ -65,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(filteredData);
 
     filteredData.sort((a, b) => b.count - a.count);
-
     // Loop through each element in the filtered data
     filteredData.forEach((element) => {
       const item = counter(
@@ -146,4 +146,39 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+  document.querySelectorAll(".log").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent default action if necessary (e.g., for anchor tags)
+
+      const id = link.getAttribute("data-id");
+      const name = link.getAttribute("data-name");
+      const datas = `id=${encodeURIComponent(id)}&act=${encodeURIComponent(
+        "getLog"
+      )}`;
+
+      requestAjax("../data/control/request.php", datas)
+        .then((data) => {
+          logLists.innerHTML = "";
+          const logs = phpArray(data.updatedData);
+          logs.sort((a, b) => b.id - a.id);
+          title.innerHTML = name + "'s Counter Logs";
+          title.classList.add("mb-4");
+          let x = 1;
+          logs.forEach((log) => {
+            logLists.appendChild(
+              createLinkList(x, name, log.count, log.createTime)
+            );
+            x++;
+          });
+
+          // Handle successful data retrieval here (e.g., update the UI)
+        })
+        .catch((error) => {
+          console.error("Error handling request:", error);
+          // Handle the error (already alerted in requestAjax)
+        });
+    });
+  });
+
+  document.title = selectedData["Category"] + " Counter Category";
 });

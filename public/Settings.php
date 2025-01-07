@@ -5,7 +5,7 @@ require_once "../data/functions/get.php";
 require_once "../data/config/connection.php"; ?>
 <? require "../assets/template/header.php"; ?>
 
-<div class="container">
+<div class="container mt-5 pt-3">
     <div class="row mt-3">
         <h1 class="h1">Configuration
         </h1>
@@ -37,7 +37,7 @@ require_once "../data/config/connection.php"; ?>
                         data-type="year">Add New Year</a>
                 </div>
             </div>
-            <div class="col-lg-6 my-1">
+            <div class="col-lg-6 my-2 ">
                 <div class="row">
                     <h2 class="h3">Category</h2>
                 </div>
@@ -67,9 +67,8 @@ require_once "../data/config/connection.php"; ?>
         </div>
         <div class="row mt-3 px-3">
             <a href="newNameForm.php" class="btn btn-primary btn-sm p-2">Add Data</a>
-            <? require_once "../data/view/nametable.php" ?>
-
         </div>
+        <? require_once "../data/view/nametable.php" ?>
 
     </div>
 

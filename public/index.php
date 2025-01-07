@@ -17,7 +17,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
 // echo '</pre>';
 ?>
 
-<hr>
+<hr class="mt-5 pt-3">
 <div class="container">
     <div class="row my-2">
         <h4 class="text-center"> Overall Data by Year </h4>

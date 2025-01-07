@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       editName.value = name.Name + "(" + name.id + ")";
       editName.disabled = true;
       editCategory.value = name.Cat;
+      console.log(name.Image);
       editCategory.innerHTML = name.Category;
       const subcategories = phpArray(button.getAttribute("data-sub"));
       editSubCat.innerHTML = "";
@@ -111,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     reader.readAsDataURL(file);
   });
-
+  let croppedURL;
   // Handle crop button click
   cropBtn.addEventListener("click", function () {
     if (cropper) {
@@ -131,9 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
         imageInput.files = dataTransfer.files; // Set the input files
 
         // Update the preview with the cropped image
-        const croppedURL = URL.createObjectURL(blob);
+        croppedURL = URL.createObjectURL(blob);
         imagePreview.src = croppedURL;
 
+        document.getElementById("image+".name.id).src = croppedURL;
         // Make the upload button visible after cropping
         uploadBtn.style.display = "inline-block";
 
@@ -151,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
     categoryName = button.getAttribute("data-category"); // Get category name
     catID = button.getAttribute("data-catId"); // Get category name
     const sublist = button.getAttribute("data-sublist"); // Get sublist JSON string
-
     // Parse sublist JSON into an array
     const sublistArray = sublist ? JSON.parse(sublist) : [];
 
@@ -223,15 +224,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Get the user's name and replace spaces with dashes for the file name
     const userName = editName.value.trim();
-    console.log(userName);
-    const categorySelect = document.getElementById("category");
-    const subCategorySelect = document.getElementById("editSubCat");
 
+    const id = userName.match(/\((\d+)\)/);
     // Check if the name input is empty or if any other required field is empty
 
     // Get the user's name and sanitize it to use as a file name
     let fileName = name.Image; // Replace spaces with dashes
-    console.log(fileName);
     // Check if no file was uploaded and set a default file name
     if (!imageInput.files.length) {
       if (!confirm("No image selected. Image Wont be replaced")) {
@@ -246,11 +244,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Add the action parameter to specify the type of operation
+    formData.append("id", id[1]);
+    formData.append("fileName", name.Image);
+    formData.append("subCat", editSubCat.value);
     formData.append("action", "member"); // You can change "add" to "edit" or "delete" based on the form's purpose
-    formData.append("attempt", "addNew"); // You can change "add" to "edit" or "delete" based on the form's purpose
+    formData.append("attempt", "update"); // You can change "add" to "edit" or "delete" based on the form's purpose
 
     // If form validation passed, send the form data via AJAX
-    // sendAjax("../data/control/crud.php", formData, "Settings");
+    sendAjax("../data/control/crud.php", formData, "Settings");
   });
   /// Modal YearSub SubmitButtons
   submitButton.addEventListener("click", (event) => {
@@ -273,4 +274,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     sendAjax("../data/control/crud.php", formData, "Settings");
   });
+  document.title = "Config";
 });

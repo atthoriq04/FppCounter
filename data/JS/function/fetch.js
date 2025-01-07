@@ -19,31 +19,30 @@ function sendAjax(url, formData, loc) {
     });
 }
 
-function requestAjax(url, id) {
-  return new Promise((resolve, reject) => {
-    const data = { id: id }; // Send the ID in the body as JSON
-
-    fetch(url, {
-      method: "POST", // Use POST method
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data), // Send the data as a JSON string
+function requestAjax(url, datas) {
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: datas,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
     })
-      .then((response) => response.json()) // Parse the JSON response
-      .then((data) => {
-        if (data.error) {
-          alert("Failed: " + data.message);
-          reject(data); // Reject the promise with the error data
-        } else {
-          resolve(data); // Resolve the promise with the data
-        }
-      })
-      .catch((error) => {
-        console.error("Error uploading the data:", error);
-        alert(error);
-        reject(error); // Reject the promise with the error
-      });
-  });
+    .then((data) => {
+      if (data.success) {
+        return data;
+      } else {
+        alert("Upload failed: " + data.message);
+        return Promise.reject(data); // Reject promise on failure for consistent error handling
+      }
+    })
+    .catch((error) => {
+      console.error("Error uploading the data:", error);
+      alert("Error: " + error.message);
+      throw error; // Rethrow error for the calling context
+    });
 }
 export { sendAjax, requestAjax };

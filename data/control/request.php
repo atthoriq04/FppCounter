@@ -1,22 +1,39 @@
 <?php
-require_once("../functions/get.php");
-require_once "../config/connection.php";
+// Enable error reporting for debugging
+ob_clean();
+flush();
+require_once("../config/query.php");
+require_once("../config/connection.php");
+require_once("../functions/name.php");
+require_once("../functions/yearcat.php");
+require_once("../functions/counterClass.php");
+$query = new query;
+$member = new memberName($con, $query);
+$yearcat = new yearcat($con, $query);
+$counterClass = new counterClass($con, $query);
 
-// Assuming 'get' class requires a connection parameter or the path to the query file.
-$dataObj = new get($con); // Ensure correct instantiation of the 'get' class
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['act']) ? $_POST['act'] : null;
 
-// Get the raw POST data
-$data = json_decode(file_get_contents("php://input"), true);
 
-// Check if the ID exists
-if (isset($data['id'])) {
-    $id = $data['id'];
-
-    // Fetch logs based on the ID using the getLogs method
-    // $logs = $dataObj->getLogs($con, $id);  // Assuming getLogs method doesn't need the connection parameter again
-
-    // Return the logs as JSON
-    echo json_encode($id);
+    switch ($action) {
+        case 'getLog':
+            $response = $counterClass->getLog($_POST['id']);
+            break;
+        default:
+            $response = ([
+                'success' => false,
+                'message' => $action
+            ]);
+    }
+    // Always output the response as JSON
+    echo json_encode($response);
 } else {
-    echo json_encode(['error' => true, 'message' => $data['id']]);
+    // Handle invalid request method
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
 }

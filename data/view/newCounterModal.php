@@ -19,7 +19,11 @@
                         <input type="text" class="form-control" id="searchName" placeholder="name@example.com" autocomplete="off">
                         <label for="searchName">Search Name</label>
                     </div>
-                    <div class="row mx-1" id=selector>
+                    <div class="row mx-1 mb-3" id=selector>
+                    </div>
+                    <div class="btn-group mx-1" role="group" aria-label="Basic checkbox toggle button group">
+                        <input type="checkbox" class="mx-1" id="log" name="log">
+                        <label for="log">Create A Log?</label>
                     </div>
                 </form>
             </div>

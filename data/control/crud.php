@@ -22,6 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'addNew':
                 $response = $member->memberSubmit($_POST, $_FILES);
                 break;
+            case 'update':
+                $response = $member->updateMember($_POST, $_FILES);
+                break;
             default:
                 $response = [
                     "success" => false,
@@ -53,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //SELECT countid,name,count FROM `counter` INNER join name ON name.id = counter.id_name WHERE Year_id =2024;
         switch ($attempt) {
             case "addNew":
-                $response = $counterClass->addNewCounter($_POST['year'], $_POST['nameId']);
+                $response = $counterClass->addNewCounter($_POST['year'], $_POST['nameId'], $_POST['log']);
                 break;
             case 'addArchieve':
                 $response = $counterClass->archiveUpload($_POST['year'], $_POST['nameId'], $_POST['count']);

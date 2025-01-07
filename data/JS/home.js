@@ -9,12 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const lists = phpArray(event.currentTarget.dataset.name);
       const ranks = document.getElementById("rankList+" + cat_id);
       ranks.innerHTML = "";
+      console.log(lists);
       ranks.appendChild(createRanksHead());
       link.style.visibility = "hidden";
       Object.entries(lists)
         .slice(0, 15)
         .forEach(([key, value], index) => {
-          ranks.appendChild(createLinkList(1, value));
+          ranks.appendChild(
+            createLinkList(1, value.Name, value.SubCategory, value.grandTotal)
+          );
         });
       const closes = document.getElementById("close+" + cat_id);
       console.log(closes);
@@ -34,4 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
       element.innerHTML = "";
     });
   }
+
+  document.title = "FPP Counter Home";
 });

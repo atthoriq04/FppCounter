@@ -1,5 +1,5 @@
 import { sendAjax } from "./function/fetch.js";
-
+import { phpArray } from "./function/function.js";
 document.addEventListener("DOMContentLoaded", function () {
   const imageInput = document.getElementById("imageInput");
   const cropContainer = document.getElementById("cropContainer");
@@ -8,6 +8,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const uploadBtn = document.getElementById("uploadBtn");
   const nameInput = document.getElementById("name"); // User's name input
   const uploadForm = document.getElementById("uploadForm");
+  const category = document.getElementById("category");
+  const subcat = document.getElementById("subcat");
+  const sender = document.getElementById("sender");
+
+  const subcategories = phpArray(sender.getAttribute("data-sub"));
+  console.log(subcategories);
+  category.addEventListener("change", (event) => {
+    subcat.innerHTML = "";
+    subcategories.forEach((sub) => {
+      const subs = document.createElement("option");
+      subs.value = sub.sub_id;
+      subs.innerHTML = sub.SubCategory;
+      if (sub.id_cat === category.value) {
+        subcat.appendChild(subs);
+      }
+    });
+  });
+
   let cropper;
 
   // Initially, make the upload button visible
@@ -124,4 +142,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // If form validation passed, send the form data via AJAX
     sendAjax("../data/control/crud.php", formData, "Settings");
   });
+  document.title = "Add New Name";
 });

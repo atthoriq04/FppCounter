@@ -12,7 +12,7 @@ function rankingNameList($nameLists, $imgLoc, $status, $colSize)
                 <div class="card mb-3" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="<?= $colSize ?>">
-                            <img src="<?= $imgLoc . $name['Image'] ?>" class="img-fluid  rounded-start text-center " styly="width:50vw" alt=" ...">
+                            <img src="<?= $imgLoc . $name['Image'] ?>" class="img-fluid  rounded-start text-center " alt=" ...">
                         </div>
                         <div class="<?= $colSize ?>">
                             <div class="card-body">
