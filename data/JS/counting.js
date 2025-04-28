@@ -96,6 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
       updateElementClassBasedOnWidth(item);
     });
   });
+  function addLog(logs, name) {}
+
   addData(counterList);
 
   function attachEventListeners() {
@@ -145,40 +147,44 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-  }
-  document.querySelectorAll(".log").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent default action if necessary (e.g., for anchor tags)
+    document.querySelectorAll(".log").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default action if necessary (e.g., for anchor tags)
+        const id = link.getAttribute("data-id");
+        let listed = id;
+        const name = link.getAttribute("data-name");
+        const filteredData = counterList.filter((item) =>
+          listed.includes(item.countId)
+        );
+        const firstUpdate = filteredData[0].First_Update;
+        const datas = `id=${encodeURIComponent(id)}&act=${encodeURIComponent(
+          "getLog"
+        )}`;
 
-      const id = link.getAttribute("data-id");
-      const name = link.getAttribute("data-name");
-      const datas = `id=${encodeURIComponent(id)}&act=${encodeURIComponent(
-        "getLog"
-      )}`;
-
-      requestAjax("../data/control/request.php", datas)
-        .then((data) => {
-          logLists.innerHTML = "";
-          const logs = phpArray(data.updatedData);
-          logs.sort((a, b) => b.id - a.id);
-          title.innerHTML = name + "'s Counter Logs";
-          title.classList.add("mb-4");
-          let x = 1;
-          logs.forEach((log) => {
-            logLists.appendChild(
-              createLinkList(x, name, log.count, log.createTime)
-            );
-            x++;
+        requestAjax("../data/control/request.php", datas)
+          .then((data) => {
+            logLists.innerHTML = "";
+            const logs = phpArray(data.updatedData);
+            logs.sort((a, b) => b.id - a.id);
+            title.innerHTML = name + "'s Counter Logs";
+            title.classList.add("mb-4");
+            let x = 1;
+            logs.forEach((log) => {
+              logLists.appendChild(
+                createLinkList(x, name, log.count, log.createTime)
+              );
+              x++;
+            });
+            logLists.appendChild(createLinkList(x, name, 1, firstUpdate));
+            // Handle successful data retrieval here (e.g., update the UI)
+          })
+          .catch((error) => {
+            console.error("Error handling request:", error);
+            // Handle the error (already alerted in requestAjax)
           });
-
-          // Handle successful data retrieval here (e.g., update the UI)
-        })
-        .catch((error) => {
-          console.error("Error handling request:", error);
-          // Handle the error (already alerted in requestAjax)
-        });
+      });
     });
-  });
+  }
 
   document.title = selectedData["Category"] + " Counter Category";
 });
