@@ -23,9 +23,8 @@ $categories = sendCounter($data->getCategoryData($con)[0], $latCounter, $name);
         <? require_once "../data/view/counterCategory.php" ?>
     </div>
 </div>
-<div class="row mt-2">
-    <a href="" type="button" id="newCounterButton" class="text-center btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#counterModal" data-namelist='<?= htmlspecialchars(json_encode($name, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>'>add new counter</a>
-</div>
+<button href="" type="button" id="newCounterButton" class="floating-button" data-bs-toggle="modal" data-bs-target="#counterModal" data-namelist='<?= htmlspecialchars(json_encode($name, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>'>+</button>
+
 
 
 <script type="module" src="../data/JS/counter.js"></script>
