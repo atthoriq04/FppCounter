@@ -1,4 +1,5 @@
 import { phpArray } from "./function/function.js";
+import { changeNavbar } from "./function/navbarSetting.js";
 import { createLinkList, createRanksHead } from "./function/elementCreation.js";
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".detailLink").forEach((link) => {
@@ -39,4 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.title = "FPP Counter Home";
+
+  changeNavbar(document.querySelectorAll("#navbar-sticky a"), "Home");
 });

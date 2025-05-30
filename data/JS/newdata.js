@@ -1,5 +1,6 @@
 import { sendAjax } from "./function/fetch.js";
 import { phpArray } from "./function/function.js";
+import { changeNavbar } from "./function/navbarSetting.js";
 document.addEventListener("DOMContentLoaded", function () {
   const imageInput = document.getElementById("imageInput");
   const cropContainer = document.getElementById("cropContainer");
@@ -143,4 +144,5 @@ document.addEventListener("DOMContentLoaded", function () {
     sendAjax("../data/control/crud.php", formData, "Settings");
   });
   document.title = "Add New Name";
+  changeNavbar(document.querySelectorAll("#navbar-sticky a"), "Settings");
 });

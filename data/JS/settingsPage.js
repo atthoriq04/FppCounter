@@ -1,6 +1,6 @@
 import { sendAjax } from "./function/fetch.js";
 import { phpArray } from "./function/function.js";
-
+import { changeNavbar } from "./function/navbarSetting.js";
 document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageInput");
   const cropContainer = document.getElementById("cropContainer");
@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const editSubCat = document.getElementById("editSubcat");
   const uploadBtn = document.getElementById("editButton");
   const uploadForm = document.getElementById("uploadForm");
+  const editmodal = document.getElementById("editNameModal");
+  const modalButton = document.getElementsByClassName("modalButton");
   let cropper;
   overview.forEach((element) => {
     element.remove(); // Remove each element
@@ -58,6 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let name;
   document.querySelectorAll(".edit").forEach((button) => {
     button.addEventListener("click", (event) => {
+      event.preventDefault;
+      editmodal.classList.remove("hidden");
       name = phpArray(button.getAttribute("data-name"));
       editName.value = name.Name + "(" + name.id + ")";
       editName.disabled = true;
@@ -147,74 +151,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  //SubcategoryModal
-  categoryModal.addEventListener("show.bs.modal", (event) => {
-    const button = event.relatedTarget; // Element that triggered the modal
-    categoryName = button.getAttribute("data-category"); // Get category name
-    catID = button.getAttribute("data-catId"); // Get category name
-    const sublist = button.getAttribute("data-sublist"); // Get sublist JSON string
-    // Parse sublist JSON into an array
-    const sublistArray = sublist ? JSON.parse(sublist) : [];
-
-    // Update modal title with category name
-    const modalTitle = categoryModal.querySelector(".modal-title");
-    modalTitle.textContent = categoryName || "Category Name";
-    console.log(sublistArray);
-    const test = sublistArray.filter(
-      (sublistArray) => sublistArray.id_cat == catID
-    );
-    // Update the sublist in the modal
-    const subcategoryList = categoryModal.querySelector(".list-group");
-    subcategoryList.innerHTML = ""; // Clear existing subcategories
-
-    if (test.length !== 0) {
-      test.forEach((item) => {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.textContent = item.SubCategory;
-        subcategoryList.appendChild(li);
-      });
-    } else {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-      li.textContent = "No Data Available";
-      subcategoryList.appendChild(li);
-    }
-  });
-
   //Category/YearModal
-  addNewModal.addEventListener("show.bs.modal", (event) => {
-    const button = event.relatedTarget;
-    const type = button.getAttribute("data-type");
-    form.reset();
-    inputField.value = "";
-    console.log(catID);
-    if (type === "year") {
-      modalTitle.textContent = "Add New Year";
-      inputField.name = "yearName";
-      inputField.id = "yearName";
-      inputLabel.textContent = "Year Name";
-      form.id = "yearForm";
-      submitButton.textContent = "Submit Year";
-      submitButton.dataset.type = "year";
-    } else if (type === "category") {
-      modalTitle.textContent = "Add New Category";
-      inputField.name = "catName";
-      inputField.id = "catName";
-      inputLabel.textContent = "Category Name";
-      form.id = "categoryForm";
-      submitButton.textContent = "Submit Category";
-      submitButton.dataset.type = "category";
-    } else if (type === "subcategory") {
-      modalTitle.textContent = "Add New Subcategory for " + categoryName;
-      inputField.name = "subName";
-      inputField.id = "subName";
-      inputLabel.textContent = "Subcategory Name";
-      form.id = "AddsubcategoryForm";
-      submitButton.textContent = "Submit New Sub Category";
-      submitButton.dataset.type = "subCategory";
-    }
+
+  document.querySelectorAll(".modalButton").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      addNewModal.classList.remove("hidden");
+      const type = button.getAttribute("data-type");
+      form.reset();
+      inputField.value = "";
+      console.log(catID);
+      if (type === "year") {
+        modalTitle.textContent = "Add New Year";
+        inputField.name = "yearName";
+        inputField.id = "yearName";
+        inputLabel.textContent = "Year Name";
+        form.id = "yearForm";
+        submitButton.textContent = "Submit Year";
+        submitButton.dataset.type = "year";
+      } else if (type === "category") {
+        modalTitle.textContent = "Add New Category";
+        inputField.name = "catName";
+        inputField.id = "catName";
+        inputLabel.textContent = "Category Name";
+        form.id = "categoryForm";
+        submitButton.textContent = "Submit Category";
+        submitButton.dataset.type = "category";
+      } else if (type === "subcategory") {
+        catID = button.getAttribute("data-catId");
+        categoryName = button.getAttribute("data-catName");
+        modalTitle.textContent = "Add New Subcategory for " + categoryName;
+        inputField.name = "subName";
+        inputField.id = "subName";
+        inputLabel.textContent = "Subcategory Name";
+        form.id = "AddsubcategoryForm";
+        submitButton.textContent = "Submit New Sub Category";
+        submitButton.dataset.type = "subCategory";
+      }
+    });
   });
+  addNewModal.addEventListener("show.bs.modal", (event) => {});
 
   //Upload Image
   uploadBtn.addEventListener("click", function (event) {
@@ -275,4 +250,41 @@ document.addEventListener("DOMContentLoaded", () => {
     sendAjax("../data/control/crud.php", formData, "Settings");
   });
   document.title = "Config";
+  const mainBtn = document.getElementById("newCounterButton");
+  const addCat = document.getElementById("addCat");
+  const btnLeft = document.getElementById("btnLeft");
+
+  let isOpen = false;
+
+  mainBtn.addEventListener("click", () => {
+    isOpen = !isOpen;
+
+    if (isOpen) {
+      // Slide up closer
+      addCat.classList.remove("invisible", "opacity-0", "translate-y-0");
+      addCat.classList.add("-translate-y-18", "opacity-100");
+
+      // Slide left closer
+      btnLeft.classList.remove("invisible", "opacity-0", "translate-x-0");
+      btnLeft.classList.add("-translate-x-18", "opacity-100");
+    } else {
+      addCat.classList.add("translate-y-0", "opacity-0");
+      addCat.classList.remove("-translate-y-18", "opacity-100");
+      setTimeout(() => addCat.classList.add("invisible"), 300);
+
+      btnLeft.classList.add("translate-x-0", "opacity-0");
+      btnLeft.classList.remove("-translate-x-18", "opacity-100");
+      setTimeout(() => btnLeft.classList.add("invisible"), 300);
+    }
+  });
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", (e) => {
+      console.log("a");
+      // Check if the click is directly on the backdrop (modal container)
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  });
+  changeNavbar(document.querySelectorAll("#navbar-sticky a"), "Settings");
 });

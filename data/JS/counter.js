@@ -1,6 +1,7 @@
 import { sendAjax } from "./function/fetch.js";
 import { nameSelection } from "./function/elementCreation.js";
 import { phpArray } from "./function/function.js";
+import { changeNavbar } from "./function/navbarSetting.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const newCounterButton = document.getElementById("newCounterButton");
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const isArchive = dataSender.getAttribute("data-isArchive") === "true";
   const year = dataSender.getAttribute("data-year");
   const goTo = document.querySelectorAll(".gotopage");
+  const newDataModal = document.getElementById("newDataModal");
   console.log(year);
   const counterList = phpArray(dataSender.getAttribute("data-latCounter"));
   console.log(counterList);
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   if (newCounterButton) {
     newCounterButton.addEventListener("click", (event) => {
+      newDataModal.classList.remove("hidden");
       const year = document.getElementById("year");
       const searchName = document.getElementById("searchName");
       const namelistArray = phpArray(
@@ -56,7 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
               "#selected" + namelist["id"]
             );
             if (selectedLink) {
+              console.log("a");
               selectedLink.addEventListener("click", (event) => {
+                console.log("a");
                 searchName.value =
                   namelist["Name"] + "(" + namelist["id"] + ")";
                 searchName.disabled = true;
@@ -67,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   namelist["Name"],
                   "../assets/images/" + namelist["Image"],
                   namelist["Category"],
-                  namelist["SubCategory"]
+                  namelist["SubCategory"],
+                  false
                 );
                 selector.appendChild(item);
               });
@@ -107,7 +113,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", (e) => {
+      // Check if the click is directly on the backdrop (modal container)
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  });
   //   submitButton.addEventListener("click", (event) => {
   //     event.preventDefault(); // Prevent form submission
   //     const type = submitButton.getAttribute("data-type");
@@ -126,4 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
   //   });
 
   document.title = isArchive ? year + " Counter Archieve" : "Counter";
+  changeNavbar(document.querySelectorAll("#navbar-sticky a"), "Counter");
 });

@@ -1,158 +1,115 @@
-function cardHeader(name) {
-  const cardHeader = document.createElement("div");
-  cardHeader.classList.add("card-header");
-  cardHeader.innerHTML = name;
-  return cardHeader;
-}
-function cardFooter(date) {
-  // Create the card-footer div
-  const cardFooter = document.createElement("div");
-  cardFooter.classList.add("card-footer", "text-body-secondary"); // Add both classes
-  const p = document.createElement("p");
-  p.classList.add("cardFooter");
-  p.innerHTML = "Last Updated : " + date;
-  cardFooter.appendChild(p);
-  return cardFooter;
-}
-function cardContainer() {
-  const cardContainer = document.createElement("div");
-  cardContainer.classList.add("card");
-  cardContainer.style.width = "100%";
-  return cardContainer;
-}
-function cardBody() {
-  const cardBody = document.createElement("div");
-  cardBody.classList.add("card-Body");
-  return cardBody;
-}
-function cardImage(image) {
+function cardImageTailwind(image) {
   const img = document.createElement("img");
   img.src = image;
-  img.classList.add("card-img-top"); // Add the 'card-img-top' class
   img.alt = "...";
+  img.className = "w-full aspect-square object-cover rounded-lg mb-3";
   return img;
 }
-function col() {
-  const col = document.createElement("div");
-  col.classList.add("col-sm-3");
-  col.classList.add("mt-3");
-  return col;
+
+function cardHeaderTailwind(name, id, log) {
+  const header = document.createElement("div");
+  header.className = "text-base font-semibold mb-3";
+
+  const title = document.createElement("h2");
+  title.className = "id";
+  title.setAttribute("data-id", id);
+  title.setAttribute("data-log", log);
+  title.textContent = name;
+  title.setAttribute("data-name", name);
+
+  if (log === "1") {
+    title.className = "id log";
+    const logLink = document.createElement("a");
+    logLink.className = "text-blue-500 hover:text-blue-800 ";
+    logLink.href = "#";
+    logLink.setAttribute("data-id", id);
+    logLink.setAttribute("data-bs-toggle", "modal");
+    logLink.setAttribute("data-bs-target", "#logsModal");
+    logLink.appendChild(title);
+    header.appendChild(logLink);
+  } else {
+    header.appendChild(title);
+  }
+  return header;
 }
 
-function nameSelection(id, name, image, category, SubCategory) {
-  const body = cardBody();
-  const container = cardContainer();
-  const column = col();
-  const disCategory = document.createElement("h5");
-  disCategory.classList.add("card-title");
-  disCategory.classList.add("h6");
-  disCategory.innerHTML = category;
+function cardCounterTailwind(id, value, isArchive) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "flex justify-center items-center gap-3";
 
-  const disSubCategory = document.createElement("h5");
-  disSubCategory.classList.add("card-subtitle");
-  disSubCategory.classList.add("mb-2");
-  disSubCategory.classList.add("text-body-secondary");
-  disSubCategory.innerHTML = SubCategory;
+  if (!isArchive) {
+    const btnMinus = document.createElement("button");
+    btnMinus.className =
+      "btn-secondary px-3 py-1 bg-white border border-gray-300 rounded-md text-lg font-medium hover:bg-gray-100 transition";
+    btnMinus.textContent = "-";
+    wrapper.appendChild(btnMinus);
+  }
 
-  const selected = document.createElement("a");
-  selected.href = "#"; // Set the href attribute
-  selected.classList.add("card-link"); // Add the 'card-link' class
-  selected.id = "selected" + id; // Set the id attribute
-  selected.style.textDecoration = "none";
+  const span = document.createElement("span");
+  span.className = "text-lg font-bold value";
+  span.id = `count-${id}`;
+  span.textContent = value;
+  wrapper.appendChild(span);
+
+  if (!isArchive) {
+    const btnPlus = document.createElement("button");
+    btnPlus.className =
+      " btn-secondary px-3 py-1 bg-white border border-gray-300 rounded-md text-lg font-medium hover:bg-gray-100 transition";
+    btnPlus.textContent = "+";
+    wrapper.appendChild(btnPlus);
+  }
+
+  return wrapper;
+}
+function nameSelection(id, name, image, category, SubCategory, log) {
+  const column = document.createElement("div");
+  column.className =
+    "card rounded-xl p-4 text-center flex flex-col items-center w-full max-w-xs mt-3 border-1 border-gray-300 group shadow-lg/20   shadow-md p-4 hover:shadow-lg transition-all duration-300 ";
+
+  const card = document.createElement("a");
+  card.href = "#";
+  card.id = "selected" + id;
+  card.className = "block";
+  card.style.textDecoration = "none";
+
+  // Image section
+  card.appendChild(cardImageTailwind(image));
+
+  // Header (name with or without log modal trigger)
+  card.appendChild(cardHeaderTailwind(name, id, log));
+
+  // Body with category and subcategory
+  const body = document.createElement("div");
+  body.className = "text-sm text-gray-600 space-y-1";
+
+  const disCategory = document.createElement("p");
+  disCategory.className = "font-medium";
+  disCategory.textContent = category;
+
+  const disSubCategory = document.createElement("p");
+  disSubCategory.className = "text-gray-500";
+  disSubCategory.textContent = SubCategory;
 
   body.appendChild(disCategory);
   body.appendChild(disSubCategory);
+  card.appendChild(body);
 
-  container.appendChild(cardImage(image));
-  container.appendChild(cardHeader(name));
-  container.appendChild(body);
-  selected.appendChild(container);
-
-  column.appendChild(selected);
+  column.appendChild(card);
   return column;
 }
 
-function counter(id, name, image, value, log, date, isArchive) {
+function counter(id, name, image, value, log, isArchive) {
   // Create the card components
-  const body = cardBody();
-  const container = cardContainer();
-  const col = document.createElement("div");
-  col.classList.add("mt-3");
-  const Footer = cardFooter(date);
-  const cardHeader = document.createElement("div");
-  cardHeader.classList.add("card-header");
+  const card = document.createElement("div");
+  card.className =
+    "card rounded-xl p-4 text-center flex flex-col items-center w-full max-w-xs mt-3 border-1 border-gray-300 group shadow-lg/20 ";
+  card.dataset.index = id;
 
-  const logHeader = document.createElement("a");
-  logHeader.classList.add("log");
-  logHeader.setAttribute("data-id", id);
-  logHeader.setAttribute("data-bs-toggle", "modal");
-  logHeader.setAttribute("data-bs-target", "#logsModal");
-  logHeader.setAttribute("data-name", name);
-  logHeader.href = "#";
-  //  class="btn btn-primary"  data-bs-target=""
-  const cardTitle = document.createElement("h5");
-  cardTitle.classList.add("text-center");
-  cardTitle.classList.add("id");
-  cardTitle.setAttribute("data-id", id);
-  cardTitle.setAttribute("data-log", log);
-  cardTitle.innerHTML = name;
-  if (log !== "1") {
-    cardHeader.appendChild(cardTitle);
-  } else {
-    logHeader.appendChild(cardTitle);
-    cardHeader.appendChild(logHeader);
-  }
+  card.appendChild(cardImageTailwind(image));
+  card.appendChild(cardHeaderTailwind(name, id, log));
+  card.appendChild(cardCounterTailwind(id, value, isArchive));
 
-  // Create the row for the counter
-  const row = document.createElement("div");
-  row.classList.add("row", "text-center", "py-4", "mx-1");
-
-  // Minus button
-  const colMinus = document.createElement("div");
-  colMinus.classList.add("col-4");
-  const btnMinus = document.createElement("button");
-  btnMinus.classList.add("btn", "btn-secondary", "m-0");
-  btnMinus.style.width = "100%";
-  btnMinus.textContent = "-";
-  if (isArchive !== true) {
-    colMinus.appendChild(btnMinus);
-  }
-  // Value display
-  const colValue = document.createElement("div");
-  colValue.classList.add("col-4", "text-center");
-  const valueText = document.createElement("h5");
-  valueText.classList.add("value", "m-0");
-  valueText.style.background = "grey";
-  valueText.textContent = value;
-  colValue.appendChild(valueText);
-
-  // Plus button
-  const colPlus = document.createElement("div");
-  colPlus.classList.add("col-4");
-  const btnPlus = document.createElement("button");
-  btnPlus.classList.add("btn", "btn-secondary", "m-0");
-  btnPlus.style.width = "100%";
-  btnPlus.textContent = "+";
-  if (isArchive !== true) {
-    colPlus.appendChild(btnPlus);
-  }
-
-  // Append the counter components to the row
-  row.appendChild(colMinus);
-  row.appendChild(colValue);
-  row.appendChild(colPlus);
-
-  // Build the card
-  body.appendChild(row);
-  container.appendChild(cardImage(image));
-  container.appendChild(cardHeader);
-  container.appendChild(body);
-  container.appendChild(Footer);
-
-  // Add the card to the column
-  col.appendChild(container);
-
-  return col;
+  return card;
 }
 
 function createLinkList(x, name, sub, total) {
@@ -161,25 +118,51 @@ function createLinkList(x, name, sub, total) {
 
   // Create and append the first <td> with x
   const tdIndex = document.createElement("td");
-  tdIndex.classList.add("text-center");
+  tdIndex.classList.add(
+    "text-center",
+    "text-sm",
+    "border-b",
+    "border-gray-300",
+    "py-3"
+  );
   tdIndex.textContent = x;
   row.appendChild(tdIndex);
 
   // Create and append the third <td> with Name
   const tdName = document.createElement("td");
-  tdName.classList.add("text-center");
+  tdName.classList.add(
+    "text-center",
+    "text-sm",
+    "border-b",
+    "border-gray-300",
+    "py-3"
+  );
+
   tdName.textContent = name;
   row.appendChild(tdName);
 
   // Create and append the fourth <td> with SubCategory
   const tdSubCategory = document.createElement("td");
-  tdSubCategory.classList.add("text-center");
+  tdSubCategory.classList.add(
+    "text-center",
+    "text-sm",
+    "border-b",
+    "border-gray-300",
+    "py-3"
+  );
+
   tdSubCategory.textContent = sub;
   row.appendChild(tdSubCategory);
 
   // Create and append the fifth <td> with a static value (0)
   const tdStatic = document.createElement("td");
-  tdStatic.classList.add("text-center");
+  tdStatic.classList.add(
+    "text-center",
+    "text-sm",
+    "border-b",
+    "border-gray-300",
+    "py-3"
+  );
   tdStatic.textContent = total;
   row.appendChild(tdStatic);
 
@@ -191,6 +174,7 @@ function createRanksHead() {
   const thead = document.createElement("thead");
   thead.classList.add("text-center");
 
+  thead.classList.add("bg-gray-100", "text-gray-700", "uppercase", "text-sm");
   // Create the <tr> element
   const tr = document.createElement("tr");
 
@@ -198,18 +182,22 @@ function createRanksHead() {
   const th1 = document.createElement("th");
   th1.scope = "col";
   th1.textContent = "#";
+  th1.classList.add("px-4", "py-3", "border-b", "text-left");
 
   const th2 = document.createElement("th");
   th2.scope = "col";
   th2.textContent = "Name";
+  th2.classList.add("px-4", "py-3", "border-b", "text-left");
 
   const th3 = document.createElement("th");
   th3.scope = "col";
   th3.textContent = "Sub Category";
+  th3.classList.add("px-4", "py-3", "border-b", "text-left");
 
   const th4 = document.createElement("th");
   th4.scope = "col";
   th4.textContent = "Grand Total";
+  th4.classList.add("px-4", "py-3", "border-b", "text-left");
 
   // Append the <th> elements to the <tr>
   tr.appendChild(th1);

@@ -13,10 +13,11 @@ $name = $data->getNames($con);
 // echo '</pre>';
 ?>
 
+<div class="mt-15"></div>
 <div class="row mt-5 pt-3" style="background-color:grey" id="Data-Sender">
     <h1 class="text-center" id="header">conter</h1>
 </div>
-<div class="row mt-5 mx-auto" id="grid">
+<div class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mx-auto px-5 md:px-10" id="grid">
 
 </div>
 </div>

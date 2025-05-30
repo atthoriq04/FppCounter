@@ -6,57 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
-        .floating-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 70px;
-            height: 70px;
-            background-color: white;
-            color: #007bff;
-            border: 4px solid #007bff;
-            border-radius: 50%;
-            font-size: 44px;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 0;
-            padding-bottom: 2px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
+    <link rel="stylesheet" href="../assets/css/output.css">
 
-        .floating-button:hover {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top mb-5">
-        <div class="container">
-            <a class="navbar-brand  h2" href="#">My Counter</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-600">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">ｼｺｼｺ カウンター</span>
+            </a>
+            <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm 0 rounded-lg md:hidden  focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
             </button>
-            <div class="collapse navbar-collapse ms-auto" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active h2" href="index.php">Home</a>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-sticky">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border  rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 e bg-gray-800 md:bg-gray-900 border-gray-700">
+                    <li>
+                        <a href="index.php" class="block py-2 px-3 rounded-sm  md:border-0  md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active h2" href="counter.php">Counter</a>
+                    <li>
+                        <a href="counter.php" class="block py-2 px-3  rounded-sm md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Counter</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link h2" href="settings.php"">Config</a>
+                    <li>
+                        <a href="settings.php" class="block py-2 px-3  rounded-sm md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Settings</a>
                     </li>
                 </ul>
             </div>

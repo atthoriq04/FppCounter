@@ -24,35 +24,31 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
 // echo '</pre>';
 // echo "Study " . $_GET['year'];
 ?>
-<div class="container mt-5 pt-3">
+<div class="container mx-auto mt-15 pt-3">
     <div class="row mb-5 mt-2">
-        <h1 class="text-center"><?= $year ?> Year Overview</h1>
+        <h1 class="text-center text-3xl"><?= $year ?> Year Overview</h1>
     </div>
 </div>
 
-<hr>
-<div class="container">
-    <div class="row my-2" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($counters, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> " data-isArchive="true" data-year="<?= $_GET['year'] ?>">
-        <h4 class="text-center"><?= $year ?> Category Ranking archive</h4>
-    </div>
+<hr class="mt-8">
+<div class="row my-2" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($counters, JSON_HEX_APOS | JSON_HEX_QUOT)) ?> " data-isArchive="true" data-year="<?= $_GET['year'] ?>">
+    <h4 class="text-center text-xl"><?= $year ?> Category Ranking archive</h4>
 </div>
-<hr>
-<div class="container">
-    <div class="row mt-3" id="categoryShower">
+<hr class="pt-4">
+<div class="container mx-auto">
+    <div class="mx-auto grid gap-6 mt-3 md:grid-cols-2 lg:grid-cols-3 px-5 md:px-0 " id="categoryShower">
         <? require_once "../data/view/counterCategory.php" ?>
     </div>
 </div>
-<hr>
-<div class="container">
+<hr class="mt-8">
+<div class="container mx-auto">
     <div class="row my-2">
-        <h4 class="text-center"><?= $year ?> Names Ranking</h4>
+        <h4 class="text-center text-xl"><?= $year ?> Names Ranking</h4>
     </div>
 </div>
 <hr>
-<div class="container">
-    <div class="row">
-        <?= rankingNameList($newNameList, "../assets/images/", 0, "col-6") ?>
-    </div>
+<div class="grid gap-4 mt-3 grid-cols-2 sm:grid-cols-1 xl:grid-cols-3 justify-center w-full my-5 mx-auto lg:my-10 px-5 md:px-10 lg:pd-30 xl:px-45  ">
+    <?= rankingNameList($newNameList, "../assets/images/", 0, "col-6") ?>
 </div>
 
 <script type="module" src="../data/JS/counter.js"></script>

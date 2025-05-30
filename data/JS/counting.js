@@ -2,7 +2,7 @@ import { requestAjax } from "./function/fetch.js";
 import { counter } from "./function/elementCreation.js";
 import { phpArray } from "./function/function.js";
 import { createLinkList } from "./function/elementCreation.js";
-
+import { changeNavbar } from "./function/navbarSetting.js";
 document.addEventListener("DOMContentLoaded", () => {
   const selectedData = JSON.parse(sessionStorage.getItem("selectedCat"));
   const counterList = JSON.parse(sessionStorage.getItem("counterList"));
@@ -40,25 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     md: 768, // Medium (Tablet)
     lg: 992, // Large (Desktop)
   };
-  function updateElementClassBasedOnWidth(element) {
-    if (window.innerWidth >= breakpoints.lg) {
-      // Large screens (Desktop)
-      element.classList.remove("col-3", "col-6");
-      element.classList.add("col-2");
-    } else if (window.innerWidth >= breakpoints.md) {
-      // Medium screens (Tablet)
-      element.classList.remove("col-2", "col-6");
-      element.classList.add("col-3");
-    } else if (window.innerWidth >= breakpoints.sm) {
-      // Small screens (Smartphone)
-      element.classList.remove("col-2", "col-3");
-      element.classList.add("col-6");
-    } else {
-      // Smaller than small screen
-      element.classList.remove("col-2", "col-3", "col-6");
-      element.classList.add("col-6");
-    }
-  }
   function addData(data) {
     grid.innerHTML = ""; // Clear previous content
 
@@ -74,14 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "../assets/images/" + element["Image"],
         element.count,
         element.Logs,
-        element.Last_Update,
         isArchive
       );
 
       grid.appendChild(item);
 
       // Apply responsive classes to each item
-      updateElementClassBasedOnWidth(item);
     });
 
     // Reattach event listeners to newly created buttons (if applicable)
@@ -103,13 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function attachEventListeners() {
     document.querySelectorAll(".btn-secondary").forEach((button) => {
       button.addEventListener("click", function () {
-        const act = this.textContent.trim(); // "+" or "-"
+        const act = this.textContent.trim();
         const card = this.closest(".card");
+        console.log(card.querySelector(".id")); // "+" or "-"
         const itemId = card.querySelector(".id").getAttribute("data-id");
         const log = card.querySelector(".id").getAttribute("data-log");
 
         const quantityElement = card.querySelector(".value");
-        const footer = card.querySelector(".cardFooter");
         let currentQuantity = parseInt(quantityElement.textContent);
         const newQuantity =
           act === "+" ? currentQuantity + 1 : currentQuantity - 1;
@@ -185,6 +164,30 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+  const modal = document.getElementById("logsModal");
+  const closeModalButtons = [
+    document.getElementById("closeModal"),
+    document.getElementById("modalCloseButton"),
+  ];
 
+  // Open modal when any .log element is clicked
+  document.addEventListener("click", function (e) {
+    console.log(e.classList);
+    if (e.target.classList.contains("log")) {
+      console.log("");
+      const name = e.target.getAttribute("data-name");
+      document.getElementById("title").textContent = name + " Log";
+      modal.classList.remove("hidden");
+    }
+  });
+
+  // Close modal when clicking outside the modal content
+  modal.addEventListener("click", (e) => {
+    // Check if the click is directly on the backdrop (modal container)
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+    }
+  });
   document.title = selectedData["Category"] + " Counter Category";
+  changeNavbar(document.querySelectorAll("#navbar-sticky a"), "Counter");
 });

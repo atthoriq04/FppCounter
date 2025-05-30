@@ -1,48 +1,95 @@
-<div class="modal fade" id="editNameModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row mt-3">
-                    <div class="col-md-8 m-auto">
-                        <form action="../data/functions/crud.php" method="POST" id="uploadForm" enctype="multipart/form-data">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="editName" id="editName">
-                                <label for="editName">Name</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="Category" name="Category" aria-label="Floating label select example">
-                                    <option value="0" id="editCategory">select Catesgory</option>
+<!-- Modal (Hidden by default) -->
+<div id="editNameModal" class="fixed modal inset-0 z-50 flex items-center justify-center bg-black/60 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-[90vw]  md:w-[50vw] xl:w-[30vw] max-w-2xl mx-auto p-4">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center border-b pb-2 mb-4">
+            <h1 class="text-xl modal-title  font-semibold" id="exampleModalLabel">Logs</h1>
+            <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        </div>
 
-                                </select>
-                                <label for="Category">Category</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="editSubcat" name="editSubcat" aria-label="Floating label select example">
-                                    <option value="0">sub Category</option>
-
-                                </select>
-                                <label for="editSubcat">Select The Sub Category</label>
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Input An Image</label>
-                                <input class="form-control" type="file" name="image" id="imageInput" accept="image/*">
-                            </div>
-                            <div class="mb-3" id="cropContainer" style="display: none;">
-                                <img id="imagePreview" alt="Preview" class="img-thumbnail" style="max-width: 100%; display: block;">
-                            </div>
-                            <button type="button" id="cropBtn" class="btn btn-secondary" style="display: none;">Crop Image</button>
-                        </form>
+        <!-- Modal Body -->
+        <div class="modal-body mt-10">
+            <div class="w-full">
+                <form action="../data/functions/crud.php" method="POST" id="uploadForm" enctype="multipart/form-data" class="space-y-6 px-5 mt-3 pb-3">
+                    <!-- Name Input -->
+                    <div class="relative w-full mb-6">
+                        <input
+                            type="text"
+                            id="editName"
+                            name="editName"
+                            placeholder=" "
+                            class="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600" />
+                        <label
+                            for="editName"
+                            class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
+                            Name
+                        </label>
                     </div>
-                </div>
+
+                    <!-- Category Select -->
+                    <div class="relative">
+                        <select
+                            id="Category"
+                            name="Category"
+                            class="peer w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-blue-600 h-12 appearance-none">
+                            <option value="0" id="editCategory">select Catesgory</option>
+                        </select>
+                        <label
+                            for="Category"
+                            class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400">
+                            Category
+                        </label>
+                    </div>
+
+                    <div class="relative">
+                        <select
+                            id="editSubcat"
+                            name="editSubcat"
+                            class="peer w-full border-b-2 border-gray-300 bg-transparent text-gray-900 focus:outline-none focus:border-blue-600 h-12 appearance-none">
+                            <option value="0">Select Category to Select Sub Category</option>
+                        </select>
+                        <label
+                            for="editSubcat"
+                            class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400">
+                            Select The Sub Category
+                        </label>
+                    </div>
+
+
+                    <!-- Image Input -->
+                    <div class="space-y-2">
+                        <label for="imageInput" class="block text-sm font-medium text-gray-700">Input An Image</label>
+                        <input
+                            type="file"
+                            name="image"
+                            id="imageInput"
+                            accept="image/*"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" />
+                    </div>
+
+                    <!-- Crop preview container -->
+                    <div id="cropContainer" class="hidden">
+                        <img id="imagePreview" alt="Preview" class="rounded-md border max-w-full mx-auto" />
+                    </div>
+
+                    <!-- Crop and Upload Buttons -->
+                    <div class="flex items-center gap-4">
+                        <button type="button" id="cropBtn" class="hidden px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition">Crop Image</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="editButton">Submit</button>
-            </div>
+        </div>
+        <div class="flex justify-end gap-3 mt-6 border-t pt-4 modal-footer">
+            <button type="button"
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                data-bs-dismiss="modal">
+                Close
+            </button>
+            <button type="submit"
+                id="editButton"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                Submit
+            </button>
         </div>
     </div>
 </div>
