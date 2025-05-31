@@ -15,7 +15,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $latCounter, $name);
 
 ?>
 <div class="mt-15"></div>
-<div class=" p-4" style="background-color:grey" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($latCounter, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>" data-isArchive="false">
+<div class=" p-4" id="Data-Sender" data-latCounter="<?= htmlspecialchars(json_encode($latCounter, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>" data-isArchive="false">
     <h1 class="text-center text-3xl "><?= date('Y') ?> Counter</h1>
 </div>
 <div class="text-center p-5 md:mx-10 lg:mx-15 xl:mx-50">

@@ -47,7 +47,7 @@ $categories = sendCounter($data->getCategoryData($con)[0], $counters, $name);
     </div>
 </div>
 <hr>
-<div class="grid gap-4 mt-3 grid-cols-2 sm:grid-cols-1 xl:grid-cols-3 justify-center w-full my-5 mx-auto lg:my-10 px-5 md:px-10 lg:pd-30 xl:px-45  ">
+<div class="grid gap-4 mt-3 grid-cols-2 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center w-full my-5 mx-auto lg:my-10 px-5 md:px-10 lg:pd-30 xl:px-45  ">
     <?= rankingNameList($newNameList, "../assets/images/", 0, "col-6") ?>
 </div>
 
